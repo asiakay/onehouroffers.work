@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Enhancement Pack - Premium Real Estate Listing Upgrade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: linear-gradient(to bottom right, #f8fafc, #f1f5f9);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, #0f172a, #1e293b);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .hero-badge svg {
+            width: 24px;
+            height: 24px;
+            color: #fbbf24;
+        }
+
+        .hero-badge span {
+            color: #fbbf24;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 14px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #cbd5e1;
+            margin-bottom: 32px;
+            max-width: 800px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #f59e0b;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background: #d97706;
+        }
+
+        .btn-secondary {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Section Headers */
+        .section {
+            padding: 64px 0;
+        }
+
+        .section-header {
+            text-center;
+            margin-bottom: 48px;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        /* Pain Points Grid */
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .pain-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .pain-card p {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        /* Transformation Section */
+        .transformation {
+            background: linear-gradient(to right, #ecfdf5, #f0fdfa);
+        }
+
+        .transformation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .transformation-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .transformation-card svg {
+            width: 20px;
+            height: 20px;
+            color: #059669;
+            flex-shrink: 0;
+        }
+
+        .transformation-card span {
+            color: #334155;
+        }
+
+        /* Deliverables Section */
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .deliverable-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .deliverable-card svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+        }
+
+        .deliverable-card h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .deliverable-list {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .deliverable-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .deliverable-list svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            margin-bottom: 0;
+        }
+
+        .deliverable-note {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 16px;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background: #0f172a;
+            color: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: #1e293b;
+            padding: 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            background: #334155;
+        }
+
+        .pricing-card.selected {
+            ring: 4px solid #f59e0b;
+            box-shadow: 0 0 0 4px #f59e0b;
+        }
+
+        .pricing-card.premium {
+            background: linear-gradient(to bottom right, #d97706, #b45309);
+        }
+
+        .pricing-card.premium:hover {
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #0f172a;
+            color: #fbbf24;
+            padding: 4px 16px;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 24px;
+        }
+
+        .pricing-card.premium .pricing-price {
+            color: white;
+        }
+
+        .pricing-list {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .pricing-list svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pricing-card.starter .btn {
+            background: #334155;
+            color: white;
+        }
+
+        .pricing-card.starter .btn:hover {
+            background: #475569;
+        }
+
+        .pricing-card.premium .btn {
+            background: #0f172a;
+            color: white;
+        }
+
+        .pricing-card.premium .btn:hover {
+            background: #1e293b;
+        }
+
+        /* Workflow Section */
+        .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .workflow-step {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .workflow-number {
+            background: #2563eb;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .workflow-content {
+            flex-grow: 1;
+        }
+
+        .workflow-content h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .workflow-content p {
+            color: #64748b;
+        }
+
+        .workflow-time {
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .workflow-time span:first-child {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .workflow-time span:last-child {
+            color: #64748b;
+            font-size: 14px;
+            margin-left: 4px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(to right, #2563eb, #1d4ed8);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .cta p {
+            font-size: 20px;
+            color: #bfdbfe;
+            margin-bottom: 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .cta .btn-primary {
+            background: white;
+            color: #1d4ed8;
+            font-size: 18px;
+        }
+
+        .cta .btn-primary:hover {
+            background: #eff6ff;
+        }
+
+        .cta .btn-secondary {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            font-size: 18px;
+        }
+
+        .cta .btn-secondary:hover {
+            border-color: white;
+        }
+
+        .cta-note {
+            color: #bfdbfe;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #64748b;
+            padding: 32px 0;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-header h2 {
+                font-size: 28px;
+            }
+
+            .workflow-step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cta h2 {
+                font-size: 32px;
+            }
+        }
+
+        /* Icons (Using SVG) */
+        .icon {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                <span>One-Hour Transformation</span>
+            </div>
+            <h1>Listing Enhancement Pack</h1>
+            <p>Turn outdated property listings into luxury-style showcase pages that impress buyers and sellers in just 60 minutes.</p>
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn btn-primary">
+                    Get Started
+                    <svg class="icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+                <button class="btn btn-secondary">View Sample</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pain Points Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Does This Sound Familiar?</h2>
+                <p>Common challenges real estate agents face with their listings</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card"><p>Outdated listing pages</p></div>
+                <div class="pain-card"><p>Poor-quality online presence</p></div>
+                <div class="pain-card"><p>Messy or inconsistent branding</p></div>
+                <div class="pain-card"><p>Weak property descriptions</p></div>
+                <div class="pain-card"><p>No centralized place to send clients</p></div>
+                <div class="pain-card"><p>Scattered property photos</p></div>
+                <div class="pain-card"><p>Low inquiry rates</p></div>
+                <div class="pain-card"><p>Seller dissatisfaction</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transformation Section -->
+    <div class="section transformation">
+        <div class="container">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #059669;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <h2>The Transformation</h2>
+                <p style="max-width: 900px; margin: 0 auto; color: #334155;">A clean, luxury-style one-page property showcase that increases buyer interest and improves agent credibility</p>
+            </div>
+            <div class="transformation-grid">
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Stronger first impressions</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Increased inquiries</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Higher perceived value</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>More professional appearance</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Sellers trust you more</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Buyers engage faster</span>
+                </div>
+                <div class="transformation-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Modern premium branding</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deliverables Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What You Get</h2>
+            </div>
+            <div class="deliverables-grid">
+                <div class="deliverable-card">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <h3>Property Showcase Page</h3>
+                    <ul class="deliverable-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Hero image with rewritten property description</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>High-resolution photo gallery</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Embedded Google Map</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Schedule showing button & contact form</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Agent branding section</span>
+                        </li>
+                    </ul>
+                    <div class="deliverable-note">Available on: Carrd, Webflow, Cloudflare Pages, Square Online</div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 32px;">
+                    <div class="deliverable-card">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9333ea;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        <h3>Copywriting Upgrade</h3>
+                        <ul class="deliverable-list">
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9333ea;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>MLS description rewrite (luxury-style)</span>
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9333ea;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>Enhanced headlines & feature bullets</span>
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9333ea;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>Improved call-to-action</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="deliverable-card">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #ec4899;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                        </svg>
+                        <h3>Social Media Assets</h3>
+                        <ul class="deliverable-list">
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #ec4899;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>Instagram Story graphic</span>
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #ec4899;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>Instagram Post graphic</span>
+                            </li>
+                            <li>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #ec4899;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>3 Caption templates</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <div class="section pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #fbbf24;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h2>Simple, Transparent Pricing</h2>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card starter" data-tier="starter">
+                    <h3>Starter</h3>
+                    <div class="pricing-price">$250-300</div>
+                    <ul class="pricing-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #10b981;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Property showcase page</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #10b981;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Description rewrite</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #10b981;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Basic lead form</span>
+                        </li>
+                    </ul>
+                    <button class="btn">Choose Starter</button>
+                </div>
+
+                <div class="pricing-card premium selected" data-tier="premium">
+                    <div class="pricing-badge">POPULAR</div>
+                    <h3>Premium</h3>
+                    <div class="pricing-price">$400-500</div>
+                    <ul class="pricing-list">
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0f172a;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Everything in Starter, plus:</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0f172a;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Professional photo gallery</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0f172a;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Luxury-level copywriting</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0f172a;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Instagram assets + captions</span>
+                        </li>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0f172a;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Enhanced branding</span>
+                        </li>
+                    </ul>
+                    <button class="btn">Choose Premium</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workflow Section -->
+    <div class="section">
+        <div class="container">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #2563eb;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h2>60-Minute Workflow</h2>
+                <p>From start to finish in just one hour</p>
+            </div>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="workflow-number">1</div>
+                    <div class="workflow-content">
+                        <h3>Intake</h3>
+                        <p>Collect property info, photos, and agent details</p>
+                    </div>
+                    <div class="workflow-time">
+                        <span>5</span><span>min</span>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">2</div>
+                    <div class="workflow-content">
+                        <h3>Copywriting Upgrade</h3>
+                        <p>Rewrite description with luxury-style headlines</p>
+                    </div>
+                    <div class="workflow-time">
+                        <span>10</span><span>min</span>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">3</div>
+                    <div class="workflow-content">
+                        <h3>Build Property Page</h3>
+                        <p>Design page with gallery, map, and branding</p>
+                    </div>
+                    <div class="workflow-time">
+                        <span>25</span><span>min</span>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">4</div>
+                    <div class="workflow-content">
+                        <h3>Lead Capture Setup</h3>
+                        <p>Create contact form with email notifications</p>
+                    </div>
+                    <div class="workflow-time">
+                        <span>10</span><span>min</span>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">5</div>
+                    <div class="workflow-content">
+                        <h3>Social Media Assets</h3>
+                        <p>Design IG graphics and caption templates</p>
+                    </div>
+                    <div class="workflow-time">
+                        <span>10</span><span>min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your Listings?</h2>
+            <p>Join real estate agents who are impressing buyers and sellers with premium listing pages</p>
+            <div class="cta-buttons">
+                <a href="#pricing" class="btn btn-primary">
+                    Book Your Enhancement
+                    <svg class="icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+                <button class="btn btn-secondary">View Sample Listings</button>
+            </div>
+            <div class="cta-note">
+                <p>Questions? DM or email for a consultation</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>Listing Enhancement Pack • One-Hour Premium Upgrade for Real Estate Professionals</p>
+        </div>
+    </div>
+
+    <script>
+        // Pricing card selection
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        
+        pricingCards.forEach(card => {
+            card.addEventListener('click', function() {
+                pricingCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
