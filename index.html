@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Hour Service Library | Fast, Professional Digital Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 32px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #475569;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Offers Grid */
+        .offers-section {
+            padding: 64px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .offer-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .offer-category {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            align-self: flex-start;
+        }
+
+        .offer-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+
+        .offer-section {
+            margin-bottom: 20px;
+        }
+
+        .offer-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .offer-problem {
+            font-size: 15px;
+            color: #dc2626;
+            line-height: 1.5;
+        }
+
+        .offer-solution {
+            font-size: 15px;
+            color: #059669;
+            line-height: 1.5;
+        }
+
+        .offer-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .deliverables-list {
+            list-style: none;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .deliverables-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .deliverables-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .offer-cta {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .offer-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Bottom CTA */
+        .bottom-cta {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .bottom-cta h2 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .bottom-cta p {
+            font-size: 20px;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            border-color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            display: none;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #64748b;
+        }
+
+        .no-results.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .offers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-container {
+                justify-content: flex-start;
+            }
+
+            .bottom-cta h2 {
+                font-size: 28px;
+            }
+        }
+
+        /* Category Colors */
+        .category-restaurants { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .category-real_estate { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .category-creators { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+        .category-local_services { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .category-retail { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
+        .category-nonprofits { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .category-education_speaking { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
+        .category-authors { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+        .category-wellness { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .category-music_creative { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">⚡ Fast Digital Solutions</div>
+                <h1>One-Hour Service Library</h1>
+                <p class="hero-subtitle">Professional digital services delivered in 60 minutes or less</p>
+                <p class="hero-description">Transform your business presence with fast, focused solutions designed for busy professionals who need results now.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10</span>
+                        <span class="stat-label">Service Packages</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">60</span>
+                        <span class="stat-label">Minutes or Less</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">$150+</span>
+                        <span class="stat-label">Starting Price</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="container">
+            <div class="filter-container">
+                <span class="filter-label">Filter by:</span>
+                <button class="filter-btn active" data-category="all">All Services</button>
+                <button class="filter-btn" data-category="restaurants">Restaurants</button>
+                <button class="filter-btn" data-category="real_estate">Real Estate</button>
+                <button class="filter-btn" data-category="creators">Creators</button>
+                <button class="filter-btn" data-category="local_services">Local Services</button>
+                <button class="filter-btn" data-category="retail">Retail</button>
+                <button class="filter-btn" data-category="nonprofits">Nonprofits</button>
+                <button class="filter-btn" data-category="education_speaking">Education</button>
+                <button class="filter-btn" data-category="authors">Authors</button>
+                <button class="filter-btn" data-category="wellness">Wellness</button>
+                <button class="filter-btn" data-category="music_creative">Music & Creative</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offers Grid -->
+    <div class="offers-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Service</h2>
+                <p>Fast, professional solutions tailored to your industry</p>
+            </div>
+            
+            <div class="offers-grid" id="offersGrid">
+                <!-- Offers will be dynamically inserted here -->
+            </div>
+
+            <div class="no-results" id="noResults">
+                <h3>No services found in this category</h3>
+                <p>Try selecting a different filter</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="bottom-cta">
+        <div class="container">
+            <h2>Ready to Transform Your Business?</h2>
+            <p>Get professional digital solutions in just one hour</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">Book a Service</button>
+                <button class="btn btn-secondary">Schedule Consultation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>&copy; 2024 One-Hour Service Library. All rights reserved.</p>
+            <p>Fast, professional digital solutions for busy businesses</p>
+            <div class="footer-links">
+                <a href="#services">Services</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <a href="#about">About</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Service data
+        const services = [
+            {
+                id: "restaurant_visibility_fast_fix",
+                category: "restaurants",
+                offer_name: "Restaurant Visibility Fast-Fix",
+                problem: "Restaurant is losing customers because they cannot be found online due to missing website, missing Google Maps listing, and no digital menu.",
+                solution: "Set up Google Maps, create an online menu, build a simple website, generate QR codes, and provide quick traffic tips in 60 minutes.",
+                price_usd: "175-600",
+                deliverables_summary: [
+                    "Google Maps listing setup",
+                    "Online menu digitization",
+                    "1-page website",
+                    "3 QR codes",
+                    "30-day traffic tips"
+                ]
+            },
+            {
+                id: "real_estate_listing_enhancement",
+                category: "real_estate",
+                offer_name: "Listing Enhancement Pack",
+                problem: "Agents have outdated listing pages, messy branding, or low-quality presentations that make them lose buyers.",
+                solution: "Create a premium one-page property showcase site, rewrite listing copy, organize images, and set up lead capture.",
+                price_usd: "250-500",
+                deliverables_summary: [
+                    "Luxury listing webpage",
+                    "Rewritten property description",
+                    "Photo gallery setup",
+                    "Lead capture form",
+                    "Social media assets"
+                ]
+            },
+            {
+                id: "creator_presence_cleanup",
+                category: "creators",
+                offer_name: "Creator Digital Presence Cleanup",
+                problem: "Creators, coaches, and consultants have messy brands and no clarity in their messaging.",
+                solution: "Rewrite IG bio, fix link-in-bio, create content pillars, audit website, and clarify brand promise.",
+                price_usd: "150-300",
+                deliverables_summary: [
+                    "Rewritten bio",
+                    "Link-in-bio system",
+                    "3 content pillars",
+                    "Website audit",
+                    "Brand messaging rewrite"
+                ]
+            },
+            {
+                id: "service_business_booking_setup",
+                category: "local_services",
+                offer_name: "Booking System Setup (Barbers, Stylists, Cleaners, etc.)",
+                problem: "Service businesses lose bookings because clients can't find their link, hours, or services online.",
+                solution: "Set up a booking page, Google Maps profile, price list, hours, and automated reminders.",
+                price_usd: "150-250",
+                deliverables_summary: [
+                    "Booking system",
+                    "Google Maps optimization",
+                    "Service + price list",
+                    "Reminders setup",
+                    "Link-in-bio structure"
+                ]
+            },
+            {
+                id: "retail_visibility_boost",
+                category: "retail",
+                offer_name: "Retail Shop Visibility Boost",
+                problem: "Small local shops lack any online footprint, causing low foot traffic.",
+                solution: "Create 1-page site, Google Maps listing, digital hours, featured products page, and QR codes.",
+                price_usd: "200-400",
+                deliverables_summary: [
+                    "Google Maps listing",
+                    "1-page website",
+                    "Product highlight section",
+                    "Store hours online",
+                    "QR promo codes"
+                ]
+            },
+            {
+                id: "nonprofit_clarity_kickstart",
+                category: "nonprofits",
+                offer_name: "Nonprofit Clarity & Visibility Kickstart",
+                problem: "Nonprofits look disorganized and donors cannot understand what they do.",
+                solution: "Rewrite mission, create donation page, simplify website, and build link hub.",
+                price_usd: "200-500",
+                deliverables_summary: [
+                    "Mission rewrite",
+                    "Donation page",
+                    "Website clean-up",
+                    "Link-in-bio",
+                    "Messaging framework"
+                ]
+            },
+            {
+                id: "speaker_page_setup",
+                category: "education_speaking",
+                offer_name: "Speaker & Workshop Page Setup",
+                problem: "Educators and speakers have no professional home for booking or inquiries.",
+                solution: "1-page speaker profile with topics, bio, booking button, and downloadable one-sheet.",
+                price_usd: "175-300",
+                deliverables_summary: [
+                    "Speaker one-page",
+                    "Signature talk list",
+                    "Short professional bio",
+                    "Booking form",
+                    "Speaker one-sheet PDF"
+                ]
+            },
+            {
+                id: "author_mini_site",
+                category: "authors",
+                offer_name: "Author Mini-Site Setup",
+                problem: "Authors have no central place to buy their book or learn about them.",
+                solution: "Create one-page author site with summary, preview, buy links, and events.",
+                price_usd: "200-350",
+                deliverables_summary: [
+                    "Book summary page",
+                    "Buy buttons",
+                    "Chapter preview section",
+                    "Events page",
+                    "Newsletter opt-in"
+                ]
+            },
+            {
+                id: "therapist_booking_fix",
+                category: "wellness",
+                offer_name: "Therapist & Wellness Booking Fix",
+                problem: "Therapists lose clients because their services and scheduling are unclear.",
+                solution: "Create services page, booking calendar, bio rewrite, and streamlined navigation.",
+                price_usd: "200-300",
+                deliverables_summary: [
+                    "Services page",
+                    "Booking calendar",
+                    "Bio rewrite",
+                    "Link structure cleanup",
+                    "Simple navigation"
+                ]
+            },
+            {
+                id: "artist_essentials_kit",
+                category: "music_creative",
+                offer_name: "Artist Essentials Kit",
+                problem: "Musicians and artists lack a clean identity and central hub for their work.",
+                solution: "Create link-in-bio, artist bio, track list, schedule page, and starter EPK.",
+                price_usd: "150-250",
+                deliverables_summary: [
+                    "Link-in-bio",
+                    "Artist bio",
+                    "Show schedule",
+                    "Track list page",
+                    "EPK starter"
+                ]
+            }
+        ];
+
+        // Format category name for display
+        function formatCategory(category) {
+            return category
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Create offer card HTML
+        function createOfferCard(service) {
+            return `
+                <div class="offer-card" data-category="${service.category}">
+                    <div class="offer-category category-${service.category}">
+                        ${formatCategory(service.category)}
+                    </div>
+                    <h3>${service.offer_name}</h3>
+                    
+                    <div class="offer-section">
+                        <div class="offer-section-title">The Problem</div>
+                        <p class="offer-problem">${service.problem}</p>
+                    </div>
+                    
+                    <div class="offer-section">
+                        <div class="offer-section-title">The Solution</div>
+                        <p class="offer-solution">${service.solution}</p>
+                    </div>
+                    
+                    <div class="offer-price">$${service.price_usd}</div>
+                    
+                    <ul class="deliverables-list">
+                        ${service.deliverables_summary.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                    
+                    <button class="offer-cta" onclick="selectService('${service.id}')">
+                        Get Started →
+                    </button>
+                </div>
+            `;
+        }
+
+        // Render all offers
+        function renderOffers(filterCategory = 'all') {
+            const grid = document.getElementById('offersGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filteredServices = services;
+            if (filterCategory !== 'all') {
+                filteredServices = services.filter(s => s.category === filterCategory);
+            }
+            
+            if (filteredServices.length === 0) {
+                grid.style.display = 'none';
+                noResults.classList.add('active');
+            } else {
+                grid.style.display = 'grid';
+                noResults.classList.remove('active');
+                grid.innerHTML = filteredServices.map(service => createOfferCard(service)).join('');
+            }
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter offers
+                const category = this.getAttribute('data-category');
+                renderOffers(category);
+            });
+        });
+
+        // Handle service selection
+        function selectService(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            alert(`You selected: ${service.offer_name}\n\nPrice: $${service.price_usd}\n\nThis would normally take you to a booking or contact form.`);
+            // In production, this would navigate to a booking page or open a contact form
+        }
+
+        // Initialize - render all offers on page load
+        renderOffers();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
