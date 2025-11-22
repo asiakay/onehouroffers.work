@@ -7,27 +7,17 @@ compatibility_flags = ["nodejs_compat"]
 
 # Account
 account_id = "6d42189fc4724a2d0ad8650b53814692"
-
 workers_dev = true
 
-# D1 Database binding
-[[d1_databases]]
-binding = "DB"
-database_name = "one-hour-offers-db"
-database_id = "bda1c720-de59-407f-9406-1007da5b733f"
 
-# KV Namespace
-[[kv_namespaces]]
-binding = "CACHE"
-id = "8806f7d3bcc340dc85b28bc0061ff37f"
+# =========================================
+#            PRODUCTION ENVIRONMENT
+# =========================================
+[env.production]
+name = "one-hour-offers-api"
 
-# R2 Bucket
-[[r2_buckets]]
-binding = "FILES"
-bucket_name = "onehouroffers-files"
-
-# -------- Base Environment Vars --------
-[vars]
+# Production Vars (must be repeated here)
+[env.production.vars]
 ENVIRONMENT = "production"
 FRONTEND_URL = "https://onehouroffers.work"
 EMAIL_PROVIDER = "resend"
@@ -36,18 +26,29 @@ FROM_EMAIL = "noreply@onehouroffers.work"
 FROM_NAME = "One Hour Offers"
 ADMIN_EMAIL = "admin@onehouroffers.work"
 
-# -------- Production Environment --------
-[env.production]
-name = "one-hour-offers-api"
+# Bindings (must be repeated here)
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "one-hour-offers-db"
+database_id = "bda1c720-de59-407f-9406-1007da5b733f"
 
-[env.production.vars]
-ENVIRONMENT = "production"
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "8806f7d3bcc340dc85b28bc0061ff37f"
 
-routes = [
-  { pattern = "api.onehouroffers.work/*", zone_name = "onehouroffers.work" }
-]
+[[env.production.r2_buckets]]
+binding = "FILES"
+bucket_name = "onehouroffers-files"
 
-# -------- Staging Environment --------
+# Route
+[[env.production.routes]]
+pattern = "api.onehouroffers.work/*"
+zone_name = "onehouroffers.work"
+
+
+# =========================================
+#                 STAGING
+# =========================================
 [env.staging]
 name = "one-hour-offers-api-staging"
 
@@ -64,7 +65,10 @@ database_id = "6a90176b-d086-4866-893a-75f3464a6bbf"
 binding = "CACHE"
 id = "YOUR_STAGING_KV_NAMESPACE_ID"
 
-# -------- Development Environment --------
+
+# =========================================
+#                 DEVELOPMENT
+# =========================================
 [env.development]
 name = "one-hour-offers-api-dev"
 
@@ -72,6 +76,9 @@ name = "one-hour-offers-api-dev"
 ENVIRONMENT = "development"
 FRONTEND_URL = "http://localhost:8080"
 
-# -------- Observability --------
+
+# =========================================
+#              OBSERVABILITY
+# =========================================
 [observability]
 enabled = true
