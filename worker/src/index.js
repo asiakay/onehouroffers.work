@@ -21,6 +21,21 @@ router.get('/api/health', () => {
   });
 });
 
+// 🌱 NEW ROOT ENDPOINT
+router.get('/', () => {
+  return jsonResponse({
+    success: true,
+    message: 'One Hour Offers API is live',
+    endpoints: [
+      '/api/health',
+      '/api/services',
+      '/api/bookings',
+      '/api/create-payment-intent',
+      '/api/webhooks/stripe'
+    ]
+  });
+});
+
 // Create booking endpoint
 router.post('/api/bookings', async (request, env, ctx) => {
   try {
@@ -32,24 +47,23 @@ router.post('/api/bookings', async (request, env, ctx) => {
       return errorResponse(validation.errors.join(', '), 400);
     }
 
-    // Rate limiting check using KV
+    // Rate limiting with KV
     const clientIP = request.headers.get('CF-Connecting-IP');
     const rateLimitKey = `ratelimit:${clientIP}`;
     const requestCount = await env.CACHE.get(rateLimitKey);
-    
+
     if (requestCount && parseInt(requestCount) > 10) {
       return errorResponse('Too many requests. Please try again later.', 429);
     }
 
-    // Increment rate limit counter
     await env.CACHE.put(rateLimitKey, (parseInt(requestCount || 0) + 1).toString(), {
-      expirationTtl: 60 * 15 // 15 minutes
+      expirationTtl: 60 * 15
     });
 
     // Generate booking ID
     const bookingId = `BOOK-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-    
-    // Create booking in database
+
+    // Create booking
     const booking = await createBooking(env.DB, {
       ...data,
       bookingId,
@@ -57,7 +71,7 @@ router.post('/api/bookings', async (request, env, ctx) => {
       paymentStatus: 'unpaid'
     });
 
-    // Send confirmation emails (non-blocking)
+    // Send emails (async)
     ctx.waitUntil(
       sendBookingEmails(env, {
         ...data,
@@ -65,7 +79,7 @@ router.post('/api/bookings', async (request, env, ctx) => {
       })
     );
 
-    // Add to CRM (non-blocking)
+    // Add to CRM (async)
     ctx.waitUntil(
       addToCRM(env, {
         ...data,
@@ -88,14 +102,11 @@ router.post('/api/bookings', async (request, env, ctx) => {
 
   } catch (error) {
     console.error('Booking error:', error);
-    return errorResponse(
-      'Failed to create booking. Please try again.',
-      500
-    );
+    return errorResponse('Failed to create booking. Please try again.', 500);
   }
 });
 
-// Get booking by ID
+// Get booking
 router.get('/api/bookings/:bookingId', async (request, env) => {
   try {
     const { bookingId } = request.params;
@@ -120,16 +131,15 @@ router.get('/api/bookings/:bookingId', async (request, env) => {
 router.post('/api/create-payment-intent', async (request, env) => {
   try {
     const data = await request.json();
-    
-    // Validate payment data
+
+    // Validate payment input
     const validation = validatePayment(data);
     if (!validation.valid) {
       return errorResponse(validation.errors.join(', '), 400);
     }
 
-    // Create payment intent
     const paymentIntent = await createPaymentIntent(env, {
-      amount: Math.round(parseFloat(data.amount) * 100), // Convert to cents
+      amount: Math.round(parseFloat(data.amount) * 100),
       currency: data.currency || 'usd',
       metadata: {
         serviceId: data.serviceId,
@@ -151,29 +161,25 @@ router.post('/api/create-payment-intent', async (request, env) => {
   }
 });
 
-// Stripe webhook handler
+// Stripe webhook
 router.post('/api/webhooks/stripe', async (request, env, ctx) => {
   try {
     const signature = request.headers.get('stripe-signature');
     const body = await request.text();
 
-    if (!signature) {
-      return errorResponse('Missing signature', 400);
-    }
+    if (!signature) return errorResponse('Missing signature', 400);
 
-    // Handle webhook (includes signature verification)
     const event = await handleStripeWebhook(env, body, signature);
 
-    // Process different event types
     switch (event.type) {
       case 'payment_intent.succeeded':
         ctx.waitUntil(handlePaymentSuccess(env, event.data.object));
         break;
-      
+
       case 'payment_intent.payment_failed':
         ctx.waitUntil(handlePaymentFailure(env, event.data.object));
         break;
-      
+
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
@@ -186,10 +192,9 @@ router.post('/api/webhooks/stripe', async (request, env, ctx) => {
   }
 });
 
-// Get available services
+// Service list
 router.get('/api/services', async (request, env) => {
   try {
-    // Check cache first
     const cached = await env.CACHE.get('services-list', 'json');
     if (cached) {
       return jsonResponse({
@@ -199,7 +204,6 @@ router.get('/api/services', async (request, env) => {
       });
     }
 
-    // Service data (in production, fetch from database)
     const services = [
       {
         id: "restaurant_visibility_fast_fix",
@@ -227,18 +231,13 @@ router.get('/api/services', async (request, env) => {
           "Social media assets"
         ]
       }
-      // Add other services...
     ];
 
-    // Cache for 1 hour
     await env.CACHE.put('services-list', JSON.stringify(services), {
-      expirationTtl: 60 * 60
+      expirationTtl: 3600
     });
 
-    return jsonResponse({
-      success: true,
-      data: services
-    });
+    return jsonResponse({ success: true, data: services });
 
   } catch (error) {
     console.error('Services error:', error);
@@ -246,18 +245,17 @@ router.get('/api/services', async (request, env) => {
   }
 });
 
-// Helper: Handle successful payment
+// Payment success helper
 async function handlePaymentSuccess(env, paymentIntent) {
   try {
-    // Update booking payment status in database
     const bookingId = paymentIntent.metadata.bookingId;
+
     if (bookingId) {
       await env.DB.prepare(
         'UPDATE bookings SET payment_status = ?, payment_intent_id = ?, updated_at = CURRENT_TIMESTAMP WHERE booking_id = ?'
       ).bind('paid', paymentIntent.id, bookingId).run();
     }
 
-    // Send payment confirmation email
     await sendBookingEmails(env, {
       email: paymentIntent.metadata.customerEmail,
       type: 'payment_confirmation',
@@ -271,10 +269,9 @@ async function handlePaymentSuccess(env, paymentIntent) {
   }
 }
 
-// Helper: Handle failed payment
+// Payment failure helper
 async function handlePaymentFailure(env, paymentIntent) {
   try {
-    // Send payment failure notification
     await sendBookingEmails(env, {
       email: paymentIntent.metadata.customerEmail,
       type: 'payment_failed',
