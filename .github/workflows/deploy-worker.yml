@@ -27,8 +27,6 @@ jobs:
         working-directory: ./worker
         run: |
           npm install
-          echo "Installed dependencies:"
-          ls node_modules | head
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
@@ -39,26 +37,30 @@ jobs:
           command: deploy --env=production
 
       # ---------------------------------------------------------
-      # Set ALL production secrets (correctly, using wrangler-action)
+      # Install wrangler manually — wrangler-action can't set secrets
       # ---------------------------------------------------------
-      - name: Set Worker Secrets (Production)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: "worker"
-          command: |
-            secret put STRIPE_SECRET_KEY --env=production --value="${{ secrets.STRIPE_SECRET_KEY }}"
-            secret put STRIPE_WEBHOOK_SECRET --env=production --value="${{ secrets.STRIPE_WEBHOOK_SECRET }}"
-            secret put SENDGRID_API_KEY --env=production --value="${{ secrets.SENDGRID_API_KEY }}"
-            secret put RESEND_API_KEY --env=production --value="${{ secrets.RESEND_API_KEY }}"
-            secret put HUBSPOT_API_KEY --env=production --value="${{ secrets.HUBSPOT_API_KEY }}"
-            secret put SALESFORCE_CLIENT_ID --env=production --value="${{ secrets.SALESFORCE_CLIENT_ID }}"
-            secret put SALESFORCE_CLIENT_SECRET --env=production --value="${{ secrets.SALESFORCE_CLIENT_SECRET }}"
-            secret put SALESFORCE_USERNAME --env=production --value="${{ secrets.SALESFORCE_USERNAME }}"
-            secret put SALESFORCE_PASSWORD --env=production --value="${{ secrets.SALESFORCE_PASSWORD }}"
-            secret put SALESFORCE_SECURITY_TOKEN --env=production --value="${{ secrets.SALESFORCE_SECURITY_TOKEN }}"
-            secret put PIPEDRIVE_API_TOKEN --env=production --value="${{ secrets.PIPEDRIVE_API_TOKEN }}"
+      - name: Install Wrangler (for secret commands)
+        run: npm install -g wrangler
+
+      # ---------------------------------------------------------
+      # Add ALL PRODUCTION SECRETS using STDIN (the only v4 method)
+      # ---------------------------------------------------------
+      - name: Push secrets to Cloudflare
+        working-directory: ./worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "${{ secrets.STRIPE_SECRET_KEY }}" | wrangler secret put STRIPE_SECRET_KEY --env production
+          echo "${{ secrets.STRIPE_WEBHOOK_SECRET }}" | wrangler secret put STRIPE_WEBHOOK_SECRET --env production
+          echo "${{ secrets.SENDGRID_API_KEY }}" | wrangler secret put SENDGRID_API_KEY --env production
+          echo "${{ secrets.RESEND_API_KEY }}" | wrangler secret put RESEND_API_KEY --env production
+          echo "${{ secrets.HUBSPOT_API_KEY }}" | wrangler secret put HUBSPOT_API_KEY --env production
+          echo "${{ secrets.SALESFORCE_CLIENT_ID }}" | wrangler secret put SALESFORCE_CLIENT_ID --env production
+          echo "${{ secrets.SALESFORCE_CLIENT_SECRET }}" | wrangler secret put SALESFORCE_CLIENT_SECRET --env production
+          echo "${{ secrets.SALESFORCE_USERNAME }}" | wrangler secret put SALESFORCE_USERNAME --env production
+          echo "${{ secrets.SALESFORCE_PASSWORD }}" | wrangler secret put SALESFORCE_PASSWORD --env production
+          echo "${{ secrets.SALESFORCE_SECURITY_TOKEN }}" | wrangler secret put SALESFORCE_SECURITY_TOKEN --env production
+          echo "${{ secrets.PIPEDRIVE_API_TOKEN }}" | wrangler secret put PIPEDRIVE_API_TOKEN --env production
 
       - name: Deployment notification
         if: success()
