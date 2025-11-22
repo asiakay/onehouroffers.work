@@ -21,58 +21,48 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-         
+          node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy Worker
+        run: wrangler deploy
         working-directory: ./worker
-        
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Run tests (if any)
-        working-directory: ./worker
-        run: npm test
-        continue-on-error: true
-
-      - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: ./worker
-          command: deploy --env production
+      # --- Set Secrets After Deploy ---
 
       - name: Set Stripe secrets
         working-directory: ./worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "Setting Stripe secrets..."
-          npx wrangler secret put STRIPE_SECRET_KEY --env production <<< "${{ secrets.STRIPE_SECRET_KEY }}" || true
-          npx wrangler secret put STRIPE_WEBHOOK_SECRET --env production <<< "${{ secrets.STRIPE_WEBHOOK_SECRET }}" || true
+          wrangler secret put STRIPE_SECRET_KEY --env production <<< "${{ secrets.STRIPE_SECRET_KEY }}"
+          wrangler secret put STRIPE_WEBHOOK_SECRET --env production <<< "${{ secrets.STRIPE_WEBHOOK_SECRET }}"
 
       - name: Set email service secrets
         working-directory: ./worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "Setting email service secrets..."
-          npx wrangler secret put SENDGRID_API_KEY --env production <<< "${{ secrets.SENDGRID_API_KEY }}" || true
-          npx wrangler secret put RESEND_API_KEY --env production <<< "${{ secrets.RESEND_API_KEY }}" || true
+          wrangler secret put SENDGRID_API_KEY --env production <<< "${{ secrets.SENDGRID_API_KEY }}"
+          wrangler secret put RESEND_API_KEY --env production <<< "${{ secrets.RESEND_API_KEY }}"
 
       - name: Set CRM secrets
         working-directory: ./worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "Setting CRM secrets..."
-          npx wrangler secret put HUBSPOT_API_KEY --env production <<< "${{ secrets.HUBSPOT_API_KEY }}" || true
-          npx wrangler secret put SALESFORCE_CLIENT_ID --env production <<< "${{ secrets.SALESFORCE_CLIENT_ID }}" || true
-          npx wrangler secret put SALESFORCE_CLIENT_SECRET --env production <<< "${{ secrets.SALESFORCE_CLIENT_SECRET }}" || true
-          npx wrangler secret put SALESFORCE_USERNAME --env production <<< "${{ secrets.SALESFORCE_USERNAME }}" || true
-          npx wrangler secret put SALESFORCE_PASSWORD --env production <<< "${{ secrets.SALESFORCE_PASSWORD }}" || true
-          npx wrangler secret put SALESFORCE_SECURITY_TOKEN --env production <<< "${{ secrets.SALESFORCE_SECURITY_TOKEN }}" || true
-          npx wrangler secret put PIPEDRIVE_API_TOKEN --env production <<< "${{ secrets.PIPEDRIVE_API_TOKEN }}" || true
+          wrangler secret put HUBSPOT_API_KEY --env production <<< "${{ secrets.HUBSPOT_API_KEY }}"
+          wrangler secret put SALESFORCE_CLIENT_ID --env production <<< "${{ secrets.SALESFORCE_CLIENT_ID }}"
+          wrangler secret put SALESFORCE_CLIENT_SECRET --env production <<< "${{ secrets.SALESFORCE_CLIENT_SECRET }}"
+          wrangler secret put SALESFORCE_USERNAME --env production <<< "${{ secrets.SALESFORCE_USERNAME }}"
+          wrangler secret put SALESFORCE_PASSWORD --env production <<< "${{ secrets.SALESFORCE_PASSWORD }}"
+          wrangler secret put SALESFORCE_SECURITY_TOKEN --env production <<< "${{ secrets.SALESFORCE_SECURITY_TOKEN }}"
+          wrangler secret put PIPEDRIVE_API_TOKEN --env production <<< "${{ secrets.PIPEDRIVE_API_TOKEN }}"
 
       - name: Deployment notification
         if: success()
