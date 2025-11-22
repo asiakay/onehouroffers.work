@@ -1,84 +1,99 @@
-# Wrangler configuration for One-Hour Services API Worker
+# ============================================================
+#  Wrangler Configuration — One Hour Offers API
+# ============================================================
 
 name = "one-hour-offers-api"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Account
 account_id = "6d42189fc4724a2d0ad8650b53814692"
 workers_dev = true
 
+# ============================================================
+#  Top-Level (ONLY default env)
+# ============================================================
 
-# =========================================
-#            PRODUCTION ENVIRONMENT
-# =========================================
+# Base variables (these do NOT get inherited automatically)
+[vars]
+FRONTEND_URL   = "https://onehouroffers.work"
+EMAIL_PROVIDER = "resend"
+CRM_PROVIDER   = "hubspot"
+FROM_EMAIL     = "noreply@onehouroffers.work"
+FROM_NAME      = "One Hour Offers"
+ADMIN_EMAIL    = "admin@onehouroffers.work"
+
+# ============================================================
+#  --- PRODUCTION ENVIRONMENT (The important one)
+# ============================================================
+
 [env.production]
 name = "one-hour-offers-api"
 
-# Production Vars (must be repeated here)
 [env.production.vars]
 ENVIRONMENT = "production"
-FRONTEND_URL = "https://onehouroffers.work"
+FRONTEND_URL   = "https://onehouroffers.work"
 EMAIL_PROVIDER = "resend"
-CRM_PROVIDER = "hubspot"
-FROM_EMAIL = "noreply@onehouroffers.work"
-FROM_NAME = "One Hour Offers"
-ADMIN_EMAIL = "admin@onehouroffers.work"
+CRM_PROVIDER   = "hubspot"
+FROM_EMAIL     = "noreply@onehouroffers.work"
+FROM_NAME      = "One Hour Offers"
+ADMIN_EMAIL    = "admin@onehouroffers.work"
 
-# Bindings (must be repeated here)
+# -- D1 Database
 [[env.production.d1_databases]]
-binding = "DB"
+binding       = "DB"
 database_name = "one-hour-offers-db"
-database_id = "bda1c720-de59-407f-9406-1007da5b733f"
+database_id   = "bda1c720-de59-407f-9406-1007da5b733f"
 
+# -- KV Namespace
 [[env.production.kv_namespaces]]
 binding = "CACHE"
-id = "8806f7d3bcc340dc85b28bc0061ff37f"
+id      = "8806f7d3bcc340dc85b28bc0061ff37f"
 
+# -- R2 Bucket
 [[env.production.r2_buckets]]
-binding = "FILES"
+binding     = "FILES"
 bucket_name = "onehouroffers-files"
 
-# Route
-[[env.production.routes]]
-pattern = "api.onehouroffers.work/*"
-zone_name = "onehouroffers.work"
+# -- Routes
+routes = [
+  { pattern = "api.onehouroffers.work/*", zone_name = "onehouroffers.work" }
+]
 
+# ============================================================
+#  --- STAGING ENVIRONMENT
+# ============================================================
 
-# =========================================
-#                 STAGING
-# =========================================
 [env.staging]
 name = "one-hour-offers-api-staging"
 
 [env.staging.vars]
-ENVIRONMENT = "staging"
+ENVIRONMENT  = "staging"
 FRONTEND_URL = "https://staging.onehouroffers.work"
 
 [[env.staging.d1_databases]]
-binding = "DB"
+binding       = "DB"
 database_name = "one-hour-offers-db-staging"
-database_id = "6a90176b-d086-4866-893a-75f3464a6bbf"
+database_id   = "6a90176b-d086-4866-893a-75f3464a6bbf"
 
 [[env.staging.kv_namespaces]]
 binding = "CACHE"
-id = "YOUR_STAGING_KV_NAMESPACE_ID"
+id      = "YOUR_STAGING_KV_NAMESPACE_ID"
 
+# ============================================================
+#  --- LOCAL DEVELOPMENT (optional)
+# ============================================================
 
-# =========================================
-#                 DEVELOPMENT
-# =========================================
 [env.development]
 name = "one-hour-offers-api-dev"
 
 [env.development.vars]
-ENVIRONMENT = "development"
+ENVIRONMENT  = "development"
 FRONTEND_URL = "http://localhost:8080"
 
+# ============================================================
+#  Observability
+# ============================================================
 
-# =========================================
-#              OBSERVABILITY
-# =========================================
 [observability]
 enabled = true
