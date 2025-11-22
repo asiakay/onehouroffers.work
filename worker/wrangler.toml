@@ -75,7 +75,3 @@ FRONTEND_URL = "http://localhost:8080"
 # -------- Observability --------
 [observability]
 enabled = true
-
-# -------- Limits --------
-[limits]
-cpu_ms = 50
