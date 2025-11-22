@@ -9,7 +9,6 @@ node_compat = true
 account_id = "6d42189fc4724a2d0ad8650b53814692"
 
 workers_dev = true
-route = ""
 
 # D1 Database binding
 [[d1_databases]]
