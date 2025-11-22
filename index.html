@@ -384,6 +384,231 @@
             display: block;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .modal-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .service-summary {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border-left: 4px solid #667eea;
+        }
+
+        .service-summary h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .service-summary p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .service-price-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .form-label .required {
+            color: #dc2626;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-note {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+        }
+
+        .success-message h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .success-message p {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
@@ -409,6 +634,22 @@
 
             .bottom-cta h2 {
                 font-size: 28px;
+            }
+
+            .modal {
+                margin: 20px 0;
+            }
+
+            .modal-header {
+                padding: 24px;
+            }
+
+            .modal-body {
+                padding: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -514,6 +755,108 @@
                 <a href="#pricing">Pricing</a>
                 <a href="#contact">Contact</a>
                 <a href="#about">About</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+                <h2>Book Your Service</h2>
+                <p>Fill out the form below and we'll get back to you within 24 hours</p>
+            </div>
+            <div class="modal-body">
+                <div id="bookingForm">
+                    <div class="service-summary" id="serviceSummary">
+                        <!-- Service details will be inserted here -->
+                    </div>
+
+                    <form id="bookingFormElement" onsubmit="handleFormSubmit(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    First Name <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-input" name="firstName" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Last Name <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-input" name="lastName" required placeholder="Doe">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Email Address <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-input" name="email" required placeholder="john@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Phone Number <span class="required">*</span>
+                            </label>
+                            <input type="tel" class="form-input" name="phone" required placeholder="(555) 123-4567">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Business/Organization Name
+                            </label>
+                            <input type="text" class="form-input" name="businessName" placeholder="Your Business Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Preferred Start Date <span class="required">*</span>
+                            </label>
+                            <input type="date" class="form-input" name="preferredDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Preferred Time
+                            </label>
+                            <select class="form-select" name="preferredTime">
+                                <option value="">Select a time slot</option>
+                                <option value="morning">Morning (9am - 12pm)</option>
+                                <option value="afternoon">Afternoon (12pm - 5pm)</option>
+                                <option value="evening">Evening (5pm - 8pm)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Additional Details or Questions
+                            </label>
+                            <textarea class="form-textarea" name="message" placeholder="Tell us more about your project, specific needs, or any questions you have..."></textarea>
+                        </div>
+
+                        <input type="hidden" name="serviceId" id="selectedServiceId">
+                        <input type="hidden" name="serviceName" id="selectedServiceName">
+                        <input type="hidden" name="servicePrice" id="selectedServicePrice">
+
+                        <button type="submit" class="form-submit">
+                            Submit Booking Request
+                        </button>
+
+                        <p class="form-note">
+                            By submitting this form, you agree to be contacted about your service request. 
+                            We typically respond within 24 hours.
+                        </p>
+                    </form>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✓</div>
+                    <h3>Booking Request Received!</h3>
+                    <p>Thank you for your interest. We'll review your request and get back to you within 24 hours to confirm your booking and discuss next steps.</p>
+                    <button class="btn btn-primary" onclick="closeBookingModal()">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -750,9 +1093,145 @@
         // Handle service selection
         function selectService(serviceId) {
             const service = services.find(s => s.id === serviceId);
-            alert(`You selected: ${service.offer_name}\n\nPrice: $${service.price_usd}\n\nThis would normally take you to a booking or contact form.`);
-            // In production, this would navigate to a booking page or open a contact form
+            if (service) {
+                openBookingModal(service);
+            }
         }
+
+        // Open booking modal
+        function openBookingModal(service) {
+            const modal = document.getElementById('bookingModal');
+            const serviceSummary = document.getElementById('serviceSummary');
+            
+            // Populate service summary
+            serviceSummary.innerHTML = `
+                <h3>${service.offer_name}</h3>
+                <p>${service.solution}</p>
+                <div class="service-price-display">$${service.price_usd}</div>
+            `;
+            
+            // Set hidden fields
+            document.getElementById('selectedServiceId').value = service.id;
+            document.getElementById('selectedServiceName').value = service.offer_name;
+            document.getElementById('selectedServicePrice').value = service.price_usd;
+            
+            // Set minimum date to today
+            const dateInput = document.querySelector('input[name="preferredDate"]');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close booking modal
+        function closeBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Reset form and show booking form again
+            setTimeout(() => {
+                document.getElementById('bookingFormElement').reset();
+                document.getElementById('bookingForm').style.display = 'block';
+                document.getElementById('successMessage').classList.remove('active');
+            }, 300);
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            const submitButton = event.target.querySelector('.form-submit');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            
+            try {
+                // IMPORTANT: Replace this URL with your deployed API URL
+                // For Node.js on Vercel: https://your-project.vercel.app/api/bookings
+                // For Python on Railway: https://your-project.railway.app/api/bookings
+                // For local testing: http://localhost:3000/api/bookings (Node) or http://localhost:5000/api/bookings (Python)
+                const API_URL = 'YOUR_API_URL_HERE/api/bookings';
+                
+                // Send booking to backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    // Success! Hide form and show success message
+                    document.getElementById('bookingForm').style.display = 'none';
+                    document.getElementById('successMessage').classList.add('active');
+                    
+                    // Log booking details (optional - for analytics)
+                    console.log('Booking successful:', {
+                        bookingId: result.bookingId,
+                        service: data.serviceName,
+                        customer: `${data.firstName} ${data.lastName}`,
+                        email: data.email
+                    });
+                    
+                } else {
+                    // Handle error response from server
+                    throw new Error(result.message || 'Booking submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting booking:', error);
+                
+                // Show user-friendly error message
+                let errorMessage = 'We encountered an issue submitting your booking. ';
+                
+                if (error.message.includes('fetch')) {
+                    errorMessage += 'Please check your internet connection and try again.';
+                } else {
+                    errorMessage += error.message || 'Please try again or contact us directly.';
+                }
+                
+                alert(errorMessage);
+                
+                // Re-enable the submit button
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('bookingModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBookingModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeBookingModal();
+            }
+        });
+
+        // Handle main CTA buttons
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // If there's a default/popular service, open that
+                // Otherwise, just scroll to services section
+                if (services.length > 0) {
+                    document.querySelector('.offers-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
 
         // Initialize - render all offers on page load
         renderOffers();
