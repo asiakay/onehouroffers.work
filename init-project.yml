@@ -1,0 +1,268 @@
+name: Initialize Project Structure
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  create-structure:
+    runs-on: ubuntu-latest
+    name: Create Project Files and Folders
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create folder structure
+        run: |
+          echo "Creating project directory structure..."
+          
+          # Create main directories
+          mkdir -p .github/workflows
+          mkdir -p frontend
+          mkdir -p worker/src/services
+          mkdir -p worker/src/utils
+          mkdir -p database
+          
+          echo "✅ Folders created"
+
+      - name: Create worker/package.json
+        run: |
+          cat > worker/package.json << 'EOF'
+          {
+            "name": "onehouroffers-worker",
+            "version": "1.0.0",
+            "main": "src/index.js",
+            "scripts": {
+              "dev": "wrangler dev",
+              "deploy": "wrangler deploy",
+              "deploy:staging": "wrangler deploy --env staging"
+            },
+            "dependencies": {
+              "itty-router": "^4.0.0"
+            },
+            "devDependencies": {
+              "wrangler": "^3.0.0"
+            }
+          }
+          EOF
+          echo "✅ worker/package.json created"
+
+      - name: Create worker/src/index.js
+        run: |
+          echo "Creating worker/src/index.js..."
+          # File will be created from your worker-index.js
+          echo "// Worker index.js - add your code here" > worker/src/index.js
+
+      - name: Create worker/src/utils/responses.js
+        run: |
+          cat > worker/src/utils/responses.js << 'EOF'
+          export const corsHeaders = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Max-Age': '86400',
+          };
+
+          export function jsonResponse(data, status = 200) {
+            return new Response(JSON.stringify(data), {
+              status,
+              headers: {
+                ...corsHeaders,
+                'Content-Type': 'application/json',
+              },
+            });
+          }
+
+          export function errorResponse(message, status = 500) {
+            return jsonResponse(
+              {
+                success: false,
+                error: message,
+              },
+              status
+            );
+          }
+          EOF
+          echo "✅ worker/src/utils/responses.js created"
+
+      - name: Create worker/src/utils/validation.js
+        run: |
+          cat > worker/src/utils/validation.js << 'EOF'
+          export function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+          }
+
+          export function validatePhone(phone) {
+            const re = /^[\d\s\-\(\)\+]+$/;
+            return re.test(phone) && phone.replace(/\D/g, '').length >= 10;
+          }
+
+          export function validateBooking(data) {
+            const errors = [];
+
+            if (!data.firstName || data.firstName.trim().length < 2) {
+              errors.push('First name must be at least 2 characters');
+            }
+
+            if (!data.lastName || data.lastName.trim().length < 2) {
+              errors.push('Last name must be at least 2 characters');
+            }
+
+            if (!data.email || !validateEmail(data.email)) {
+              errors.push('Valid email address is required');
+            }
+
+            if (!data.phone || !validatePhone(data.phone)) {
+              errors.push('Valid phone number is required');
+            }
+
+            if (!data.serviceId || !data.serviceName) {
+              errors.push('Service selection is required');
+            }
+
+            if (!data.preferredDate) {
+              errors.push('Preferred date is required');
+            } else {
+              const date = new Date(data.preferredDate);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              if (date < today) {
+                errors.push('Preferred date cannot be in the past');
+              }
+            }
+
+            return {
+              valid: errors.length === 0,
+              errors
+            };
+          }
+
+          export function validatePayment(data) {
+            const errors = [];
+
+            if (!data.amount || isNaN(parseFloat(data.amount)) || parseFloat(data.amount) <= 0) {
+              errors.push('Valid amount is required');
+            }
+
+            if (!data.serviceId) {
+              errors.push('Service ID is required');
+            }
+
+            if (!data.customerEmail || !validateEmail(data.customerEmail)) {
+              errors.push('Valid customer email is required');
+            }
+
+            return {
+              valid: errors.length === 0,
+              errors
+            };
+          }
+          EOF
+          echo "✅ worker/src/utils/validation.js created"
+
+      - name: Create placeholder service files
+        run: |
+          echo "// Database service - add your code here" > worker/src/services/database.js
+          echo "// Email service - add your code here" > worker/src/services/email.js
+          echo "// Stripe service - add your code here" > worker/src/services/stripe.js
+          echo "// CRM service - add your code here" > worker/src/services/crm.js
+          echo "✅ Service placeholder files created"
+
+      - name: Create README.md
+        run: |
+          cat > README.md << 'EOF'
+          # One Hour Offers
+
+          Fast, professional digital solutions delivered in 60 minutes or less.
+
+          ## 🌐 Live Site
+          - Frontend: https://onehouroffers.work
+          - API: https://api.onehouroffers.work
+
+          ## 🚀 Quick Start
+
+          1. Run the "Setup Cloudflare Resources" workflow to create D1, KV, and R2
+          2. Add GitHub secrets (see SETUP_GUIDE.md)
+          3. Push to main branch - automatic deployment!
+
+          ## 📚 Documentation
+
+          - [Setup Guide](SETUP_GUIDE.md) - Step-by-step setup instructions
+          - [Quick Reference](QUICK_REFERENCE.md) - Checklists and commands
+          - [Cloudflare Integration Guide](CLOUDFLARE_INTEGRATION_GUIDE.md) - Technical details
+
+          ## 📁 Project Structure
+
+          ```
+          onehouroffers-work/
+          ├── .github/workflows/       # GitHub Actions workflows
+          ├── frontend/                # HTML frontend
+          ├── worker/                  # Cloudflare Worker API
+          │   ├── src/
+          │   │   ├── services/       # Email, Stripe, CRM integrations
+          │   │   └── utils/          # Helpers and validation
+          │   ├── package.json
+          │   └── wrangler.toml
+          └── database/                # D1 database schema
+          ```
+
+          ## 🛠️ Tech Stack
+
+          - **Cloudflare Pages** - Frontend hosting
+          - **Cloudflare Workers** - Serverless API
+          - **D1 Database** - SQLite database
+          - **KV Storage** - Caching & rate limiting
+          - **R2 Storage** - File storage
+          - **Stripe** - Payment processing
+          - **SendGrid/Resend** - Email delivery
+          - **HubSpot/Salesforce** - CRM integration (optional)
+
+          ## 💰 Cost
+
+          **$0/month** on Cloudflare free tier for moderate traffic!
+
+          Free tier includes:
+          - 100k Worker requests/day
+          - 5GB D1 storage
+          - 100k KV reads/day
+          - 10GB R2 storage
+          - Unlimited Pages deployments
+
+          ## 📝 License
+
+          MIT
+          EOF
+          echo "✅ README.md created"
+
+      - name: Commit all files
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git commit -m "chore: initialize project structure" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+
+      - name: Create summary
+        run: |
+          echo "# 🎉 Project Structure Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Folders Created:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ .github/workflows/" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ frontend/" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ worker/src/services/" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ worker/src/utils/" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ database/" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Files Created:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ worker/package.json" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ worker/src/utils/responses.js" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ worker/src/utils/validation.js" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Placeholder service files" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ README.md" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Add your worker code files from /mnt/user-data/outputs/" >> $GITHUB_STEP_SUMMARY
+          echo "2. Add your frontend HTML file" >> $GITHUB_STEP_SUMMARY
+          echo "3. Add your database schema.sql" >> $GITHUB_STEP_SUMMARY
+          echo "4. Run 'Setup Cloudflare Resources' workflow" >> $GITHUB_STEP_SUMMARY
