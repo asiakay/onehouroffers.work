@@ -1,0 +1,87 @@
+name: Deploy Worker to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'worker/**'
+      - '.github/workflows/deploy-worker.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Cloudflare Worker
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: worker/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./worker
+        run: npm ci
+
+      - name: Run tests (if any)
+        working-directory: ./worker
+        run: npm test
+        continue-on-error: true
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./worker
+          command: deploy --env production
+
+      - name: Set Stripe secrets
+        working-directory: ./worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "Setting Stripe secrets..."
+          npx wrangler secret put STRIPE_SECRET_KEY --env production <<< "${{ secrets.STRIPE_SECRET_KEY }}" || true
+          npx wrangler secret put STRIPE_WEBHOOK_SECRET --env production <<< "${{ secrets.STRIPE_WEBHOOK_SECRET }}" || true
+
+      - name: Set email service secrets
+        working-directory: ./worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "Setting email service secrets..."
+          npx wrangler secret put SENDGRID_API_KEY --env production <<< "${{ secrets.SENDGRID_API_KEY }}" || true
+          npx wrangler secret put RESEND_API_KEY --env production <<< "${{ secrets.RESEND_API_KEY }}" || true
+
+      - name: Set CRM secrets
+        working-directory: ./worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "Setting CRM secrets..."
+          npx wrangler secret put HUBSPOT_API_KEY --env production <<< "${{ secrets.HUBSPOT_API_KEY }}" || true
+          npx wrangler secret put SALESFORCE_CLIENT_ID --env production <<< "${{ secrets.SALESFORCE_CLIENT_ID }}" || true
+          npx wrangler secret put SALESFORCE_CLIENT_SECRET --env production <<< "${{ secrets.SALESFORCE_CLIENT_SECRET }}" || true
+          npx wrangler secret put SALESFORCE_USERNAME --env production <<< "${{ secrets.SALESFORCE_USERNAME }}" || true
+          npx wrangler secret put SALESFORCE_PASSWORD --env production <<< "${{ secrets.SALESFORCE_PASSWORD }}" || true
+          npx wrangler secret put SALESFORCE_SECURITY_TOKEN --env production <<< "${{ secrets.SALESFORCE_SECURITY_TOKEN }}" || true
+          npx wrangler secret put PIPEDRIVE_API_TOKEN --env production <<< "${{ secrets.PIPEDRIVE_API_TOKEN }}" || true
+
+      - name: Deployment notification
+        if: success()
+        run: |
+          echo "✅ Worker deployed successfully!"
+          echo "API endpoint: https://api.onehouroffers.work"
+
+      - name: Deployment failed
+        if: failure()
+        run: |
+          echo "❌ Worker deployment failed!"
+          echo "Check the logs above for details"
