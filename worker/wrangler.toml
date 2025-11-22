@@ -1,104 +1,82 @@
 # Wrangler configuration for One-Hour Services API Worker
 
-name = "one-hour-services-api"
+name = "one-hour-offers-api"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 node_compat = true
 
-# Get your account ID from Cloudflare dashboard
-# Dashboard -> Workers & Pages -> Overview -> Account ID
-account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+# Account
+account_id = "6d42189fc4724a2d0ad8650b53814692"
 
-# Worker settings
 workers_dev = true
-route = "" # Add your custom domain route here if needed
+route = ""
 
 # D1 Database binding
-# Run: wrangler d1 create one-hour-services-db
-# Then copy the database_id here
 [[d1_databases]]
 binding = "DB"
-database_name = "one-hour-services-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_name = "one-hour-offers-db"
+database_id = "bda1c720-de59-407f-9406-1007da5b733f"
 
-# KV Namespace for caching
-# Run: wrangler kv:namespace create "BOOKINGS_CACHE"
-# Then copy the id here
+# KV Namespace
 [[kv_namespaces]]
 binding = "CACHE"
-id = "YOUR_KV_NAMESPACE_ID"
+id = "8806f7d3bcc340dc85b28bc0061ff37f"
 
-# R2 Bucket for file storage (FREE: 10GB storage + 1M reads/month)
-# Run: wrangler r2 bucket create onehouroffers-files
+# R2 Bucket
 [[r2_buckets]]
 binding = "FILES"
 bucket_name = "onehouroffers-files"
 
-# Environment variables (non-sensitive)
-# Secrets should be set via: wrangler secret put SECRET_NAME
+# -------- Base Environment Vars --------
 [vars]
 ENVIRONMENT = "production"
 FRONTEND_URL = "https://onehouroffers.work"
-EMAIL_PROVIDER = "sendgrid"  # or "resend"
-CRM_PROVIDER = "hubspot"     # or "salesforce", "pipedrive"
+EMAIL_PROVIDER = "resend"
+CRM_PROVIDER = "hubspot"
 FROM_EMAIL = "noreply@onehouroffers.work"
 FROM_NAME = "One Hour Offers"
 ADMIN_EMAIL = "admin@onehouroffers.work"
 
-# Production environment
+# -------- Production Environment --------
 [env.production]
-name = "one-hour-services-api"
-vars = { ENVIRONMENT = "production" }
+name = "one-hour-offers-api"
 
-# Custom domain routing
+[env.production.vars]
+ENVIRONMENT = "production"
+
 routes = [
   { pattern = "api.onehouroffers.work/*", zone_name = "onehouroffers.work" }
 ]
 
-# Staging environment
+# -------- Staging Environment --------
 [env.staging]
-name = "one-hour-services-api-staging"
-vars = { 
-  ENVIRONMENT = "staging",
-  FRONTEND_URL = "https://staging.onehouroffers.work"
-}
+name = "one-hour-offers-api-staging"
 
-# Staging D1 database (optional - use separate DB for staging)
+[env.staging.vars]
+ENVIRONMENT = "staging"
+FRONTEND_URL = "https://staging.onehouroffers.work"
+
 [[env.staging.d1_databases]]
 binding = "DB"
-database_name = "one-hour-services-db-staging"
-database_id = "YOUR_STAGING_D1_DATABASE_ID"
+database_name = "one-hour-offers-db-staging"
+database_id = "6a90176b-d086-4866-893a-75f3464a6bbf"
 
-# Staging KV namespace
 [[env.staging.kv_namespaces]]
 binding = "CACHE"
 id = "YOUR_STAGING_KV_NAMESPACE_ID"
 
-# Development environment (local)
+# -------- Development Environment --------
 [env.development]
-name = "one-hour-services-api-dev"
-vars = { 
-  ENVIRONMENT = "development",
-  FRONTEND_URL = "http://localhost:8080"
-}
+name = "one-hour-offers-api-dev"
 
-# Observability
+[env.development.vars]
+ENVIRONMENT = "development"
+FRONTEND_URL = "http://localhost:8080"
+
+# -------- Observability --------
 [observability]
 enabled = true
 
-# Limits and performance
+# -------- Limits --------
 [limits]
-cpu_ms = 50  # Max CPU time in milliseconds
-
-# Secrets to set via CLI:
-# wrangler secret put STRIPE_SECRET_KEY
-# wrangler secret put STRIPE_WEBHOOK_SECRET
-# wrangler secret put SENDGRID_API_KEY
-# wrangler secret put RESEND_API_KEY
-# wrangler secret put HUBSPOT_API_KEY
-# wrangler secret put SALESFORCE_CLIENT_ID
-# wrangler secret put SALESFORCE_CLIENT_SECRET
-# wrangler secret put SALESFORCE_USERNAME
-# wrangler secret put SALESFORCE_PASSWORD
-# wrangler secret put SALESFORCE_SECURITY_TOKEN
-# wrangler secret put PIPEDRIVE_API_TOKEN
+cpu_ms = 50
